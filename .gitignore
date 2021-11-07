@@ -1,0 +1,8 @@
+
+/dist/
+/build/
+.classpath
+.project
+.settings/
+nbactions.xml
+test/
