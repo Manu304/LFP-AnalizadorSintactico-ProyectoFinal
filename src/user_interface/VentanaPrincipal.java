@@ -56,7 +56,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSalir = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItemValidarTexto = new javax.swing.JMenuItem();
         jMenuItemLimpiarPantalla = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -124,15 +123,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar2.add(jMenu4);
 
         jMenu1.setText("Editar");
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem1.setText("Buscar...");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
 
         jMenuItemValidarTexto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemValidarTexto.setText("Validar Texto...");
@@ -223,17 +213,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         manejador.mostrarReportes(TipoReporte.RECUENTO);
     }// GEN-LAST:event_jMenuItemRecuentoActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem1ActionPerformed
-        manejador.mostrarBuscador();
-    }// GEN-LAST:event_jMenuItem1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemAbrirArchivo;
     private javax.swing.JMenuItem jMenuItemGuardarArchivo;
     private javax.swing.JMenuItem jMenuItemLimpiarPantalla;

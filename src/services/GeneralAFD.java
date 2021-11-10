@@ -32,22 +32,26 @@ public class GeneralAFD implements AutomataFinito {
     /**
      * Valor que tiene un punto dentro de la matriz de transiciones del automata.
      */
-    public static final int PUNTO = 2;
+    public static final int GUION_BAJO = 2;
     /**
      * Valor que tiene un signo de puntuación dentro de la matriz de transiciones
      * del automata.
      */
-    public static final int SIG_PUNTUACION = 3;
+
+    public static final int GUION_MEDIO = 3;
+    public static final int COMILLAS = 4;
+    public static final int DIAGONAL = 5;
+    public static final int SIG_PUNTUACION = 6;
     /**
      * Valor que tiene un signo de operación dentro de la matriz de transiciones del
      * automata.
      */
-    public static final int SIG_OPERACION = 4;
+    public static final int SIG_OPERACION = 7;
     /**
      * Valor que tiene un signo de agrupación dentro de la matriz de transiciones
      * del automata.
      */
-    public static final int SIG_AGRUPACION = 5;
+    public static final int SIG_AGRUPACION = 8;
 
     /**
      * Constructor del autómata finito para la aplicación.
@@ -87,15 +91,18 @@ public class GeneralAFD implements AutomataFinito {
 
     @Override
     public int[][] getMatrizTransiciones() {
-        return new int[][] { { 1, 2, 5, 5, 6, 7 }, { 1, 1, ERROR, ERROR, ERROR, ERROR },
-                { ERROR, 2, 3, ERROR, ERROR, ERROR }, { ERROR, 4, ERROR, ERROR, ERROR, ERROR },
-                { ERROR, 4, ERROR, ERROR, ERROR, ERROR }, { 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0 } };
+        return new int[][] { { 1, 2, 1, 10, 3, 6, 9, 10, 11 }, { 1, 1, 1, 1, ERROR, ERROR, ERROR, ERROR, ERROR },
+                { ERROR, 2, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR }, { 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+                { 4, 4, 4, 4, 5, 4, 4, 4, 4 }, { ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR },
+                { ERROR, ERROR, ERROR, ERROR, ERROR, 7, ERROR, ERROR, ERROR }, { 8, 8, 8, 8, 8, 8, 8, 8, 8 },
+                { 8, 8, 8, 8, 8, 8, 8, 8, 8 }, { ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR },
+                { ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR },
+                { ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR }, };
     }
 
     @Override
     public int[] getEstadosAceptacion() {
-        return new int[] { 1, 2, 4, 5, 6, 7 };
+        return new int[] { 1, 2, 5, 8, 9, 10, 11 };
     }
 
     @Override
@@ -106,8 +113,17 @@ public class GeneralAFD implements AutomataFinito {
         if (Character.isDigit(c)) {
             return DIGITO;
         }
-        if (c == '.') {
-            return PUNTO;
+        if (c == '_') {
+            return GUION_BAJO;
+        }
+        if (c == '-') {
+            return GUION_MEDIO;
+        }
+        if (c == '"') {
+            return COMILLAS;
+        }
+        if (c == '/') {
+            return DIAGONAL;
         }
         if (ValidadorChar.isPuntuacionSymbol(c)) {
             return SIG_PUNTUACION;
@@ -117,6 +133,9 @@ public class GeneralAFD implements AutomataFinito {
         }
         if (ValidadorChar.isAgrupationSymbol(c)) {
             return SIG_AGRUPACION;
+        }
+        if (c != '\n' && Character.isWhitespace(c)) {
+            return DIGITO;
         }
         return ERROR;
     }
@@ -142,14 +161,19 @@ public class GeneralAFD implements AutomataFinito {
         estadoActual = 0;
         String textToken = "";
         char tmp;
+        boolean stop = false;
 
-        while (posicion < texto.length && !Character.isWhitespace(tmp = texto[posicion]) && estadoActual != ERROR
-                && estadoActual < 5) {
+        while (posicion < texto.length && estadoActual != ERROR && estadoActual < 9 && !stop) {
+            tmp = texto[posicion];
             int estadoTemporal = getEstadoSiguiente(estadoActual, tmp);
-            textToken += tmp;
-            estadoActual = estadoTemporal;
-            posicion++;
-            columna++;
+            if (Character.isWhitespace(tmp) && (estadoTemporal != 8 || estadoActual != 4)) {
+                stop = true;
+            } else {
+                textToken += tmp;
+                estadoActual = estadoTemporal;
+                posicion++;
+                columna++;
+            }
 
         }
         return crearToken(textToken);
@@ -179,12 +203,14 @@ public class GeneralAFD implements AutomataFinito {
         } else if (estadoActual == estadosAceptacion[1]) {
             tipoToken = TipoToken.NUMERO_ENTERO;
         } else if (estadoActual == estadosAceptacion[2]) {
-            tipoToken = TipoToken.NUMERO_DECIMAL;
+            tipoToken = TipoToken.LITERAL;
         } else if (estadoActual == estadosAceptacion[3]) {
-            tipoToken = TipoToken.SIG_PUNTUACION;
+            tipoToken = TipoToken.COMENTARIO;
         } else if (estadoActual == estadosAceptacion[4]) {
-            tipoToken = TipoToken.SIG_OPERADOR;
+            tipoToken = TipoToken.SIG_PUNTUACION;
         } else if (estadoActual == estadosAceptacion[5]) {
+            tipoToken = TipoToken.SIG_OPERADOR;
+        } else if (estadoActual == estadosAceptacion[6]) {
             tipoToken = TipoToken.SIG_AGRUPACION;
         } else {
             tipoToken = TipoToken.ERROR;

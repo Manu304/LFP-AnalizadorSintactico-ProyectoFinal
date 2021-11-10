@@ -54,24 +54,6 @@ public class ManejadorVentanaPrincipal {
     }
 
     /**
-     * Método para invocar a la ventana para realizar busquedas dentro del area de
-     * texto.
-     */
-
-    public void mostrarBuscador() {
-        JTextPane editorArea = frame.getjTextPaneEditor();
-        if (editorArea.getText() != null && !editorArea.getText().isBlank()) {
-            new VentanaBuscar(frame.getjTextPaneEditor());
-        } else {
-            JOptionPane.showMessageDialog(null,
-                    "No hay contenido para buscar, escriba algo primero en el area de texto", "Area de texto vacía",
-                    JOptionPane.WARNING_MESSAGE);
-            frame.getjTextPaneEditor().setText("");
-        }
-
-    }
-
-    /**
      * Método para invocar la ventana que contiene los reportes
      * 
      * @param tipo Se debe indicar el tipo de reporte que se quiere ver.
