@@ -83,6 +83,7 @@ public class GeneralAFD implements AutomataFinito {
                 } else {
                     columna++;
                 }
+                System.out.println("he usado este carteto");
                 posicion++;
             }
         }
@@ -166,8 +167,10 @@ public class GeneralAFD implements AutomataFinito {
         while (posicion < texto.length && estadoActual != ERROR && estadoActual < 9 && !stop) {
             tmp = texto[posicion];
             int estadoTemporal = getEstadoSiguiente(estadoActual, tmp);
-            if (Character.isWhitespace(tmp) && (estadoTemporal != 8 || estadoActual != 4)) {
+            if ((estadoTemporal != 8 || estadoTemporal != 4) && Character.isWhitespace(tmp)) {
                 stop = true;
+                System.out.println("me he detenido por '"+tmp+"' y mi estado temporal es" + estadoTemporal);
+
             } else {
                 textToken += tmp;
                 estadoActual = estadoTemporal;
